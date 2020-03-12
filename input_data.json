@@ -1,0 +1,6 @@
+{
+  "test_parse_nulls": {
+    "DELIMITED":{"input_data" :  "INPUT_DATA = [['header1', 'header2', 'header3'], ['Field11', 'Field12', 'Field13'], ['Field21', 'Field22','Field23']]\nINPUT_DATA_STR = '\\n'.join([','.join(line) for line in INPUT_DATA])"
+	}
+  }
+ }
