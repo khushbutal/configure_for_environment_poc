@@ -1,7 +1,7 @@
 @mqtt
 @pytest.mark.parametrize('stage_attributes', [{'data_format': 'DELIMITED', 'parse_nulls': False},
                                               {'data_format': 'DELIMITED', 'parse_nulls': True}])
-def test_parse_nulls(sdc_builder, sdc_executor, stage_attributes):
+def test_parse_nulls(sdc_builder, sdc_executor, stage_attributes, mqtt_broker):
 	INPUT_DATA = [['header1', 'header2', 'header3'], ['Field11', 'Field12', 'Field13'], ['Field21', 'Field22','Field23']]
 	INPUT_DATA_STR = '\n'.join([','.join(line) for line in INPUT_DATA])
 	EXPECTED_OUTPUT_NONE = OrderedDict([('header1', None), ('header2', 'Field22'), ('header3', 'Field23')])

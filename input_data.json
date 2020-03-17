@@ -1,9 +1,19 @@
 {
   "test_parse_nulls": {
-    "DELIMITED":{"sa_update" :  "\n\tif stage_attributes['parse_nulls']:\n\t\tstage_attributes.update({'null_constant': 'Field21'})",
+    "DELIMITED":{
+      "sa_update" :  "\n\tif stage_attributes['parse_nulls']:\n\t\tstage_attributes.update({'null_constant': 'Field21'})",
       "input_data" :  "\tINPUT_DATA = [['header1', 'header2', 'header3'], ['Field11', 'Field12', 'Field13'], ['Field21', 'Field22','Field23']]\n\tINPUT_DATA_STR = '\\n'.join([','.join(line) for line in INPUT_DATA])",
-                 "expected_output" :  "\n\tEXPECTED_OUTPUT_NONE = OrderedDict([('header1', None), ('header2', 'Field22'), ('header3', 'Field23')])\n\tEXPECTED_OUTPUT = OrderedDict([('header1', 'Field21'), ('header2', 'Field22'), ('header3', 'Field23')])",
+      "expected_output" :  "\n\tEXPECTED_OUTPUT_NONE = OrderedDict([('header1', None), ('header2', 'Field22'), ('header3', 'Field23')])\n\tEXPECTED_OUTPUT = OrderedDict([('header1', 'Field21'), ('header2', 'Field22'), ('header3', 'Field23')])",
       "assertion" : "\n\tif stage_attributes['parse_nulls']:\n\t\tassert records[1] == EXPECTED_OUTPUT_NONE\n\telse:\n\t\tassert records[1] == EXPECTED_OUTPUT"
 	}
+  },
+
+  "test_quote_character": {
+    "DELIMITED": {
+      "parametrize" : "@pytest.mark.parametrize('quote_character', ['\\t', ';', ' '])\n@pytest.mark.parametrize('multi_character_field_delimiter', ['||'])\n@pytest.mark.parametrize('delimiter_character', ['^'])",
+      "sa_update" : "\n\t\tstage_attributes.update({'quote_character': quote_character,\n\t\t\t\t\t\t\t\t 'delimiter_character': delimiter_character})",
+      "input_data" : "\tif stage_attributes['delimiter_format_type'] == 'CUSTOM':\n\t\tf = lambda ip_string: ip_string.format(quote_character=quote_character,\n\t\t\t\t\t\t\t\t\t\t\t   delimiter_character=delimiter_character)\n\t\tDATA = [[f('{quote_character}Field11{delimiter_character}{quote_character}'), 'Field12',\n\t\t\t\t f('{quote_character},Field13{quote_character}')],\n\t\t\t\t[f('{quote_character}Field{delimiter_character}21{quote_character}'), 'Field22', 'Field23']]\n\t\tfile_content = '\\n'.join([delimiter_character.join(t1) for t1 in DATA])\n\t\tEXPECTED_OUTPUT = [OrderedDict([('0', 'Field11^'), ('1', 'Field12'), ('2', ',Field13')]),\n\t\t\t\t\t\t   OrderedDict([('0', 'Field^21'), ('1', 'Field22'), ('2', 'Field23')])]\n\telse:\n\t\tf = lambda ip_string: ip_string.format(quote_character=quote_character,\n\t\t\t\t\t\t\t\t\t\t\t   multi_character_field_delimiter=multi_character_field_delimiter)\n\t\tDATA = [[f('{quote_character}Field11{multi_character_field_delimiter}{quote_character}'), 'Field12',\n\t\t\t\t f('{quote_character},Field13{quote_character}')],\n\t\t\t\t[f('{quote_character}Field{multi_character_field_delimiter}21{quote_character}'), 'Field22', 'Field23']]\n\t\tfile_content = '\\n'.join([multi_character_field_delimiter.join(t1) for t1 in DATA])\n\t\tEXPECTED_OUTPUT = [OrderedDict([('0', 'Field11||'), ('1', 'Field12'), ('2', ',Field13')]),\n\t\t\t\t\t\t   OrderedDict([('0', 'Field||21'), ('1', 'Field22'), ('2', 'Field23')])]",
+      "assertion" : "\n\tassert output_records == EXPECTED_OUTPUT"
+    }
   }
  }

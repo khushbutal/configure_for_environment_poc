@@ -1,5 +1,4 @@
 def check_word(lines, word, is_print):
-    # print(lines)
     is_word_found = False
     occurrences = []
     occurrence_lines = []
@@ -27,7 +26,7 @@ def get_start_and_end_line_number_of_tc(lines, test_case):
             return 'skip_test_case'
         start_line_no = check_word(lines, test_case, False)[1][0]
         intial_start_line_no = start_line_no
-        # print('test case starting line number: ', start_line_no, lines[start_line_no])
+        print('test case starting line number: ', start_line_no, lines[start_line_no])
         # For starting line go up(decrement)
         # print(lines[start_line_no])
         while True:
@@ -61,6 +60,6 @@ def get_start_and_end_line_number_of_tc(lines, test_case):
             end_line_no += 1
 
         # print(start_line_no, end_line_no)
-        return start_line_no, end_line_no
+        return intial_start_line_no, start_line_no, end_line_no
     except:
         pass
