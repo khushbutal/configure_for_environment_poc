@@ -15,5 +15,19 @@
       "input_data" : "\tif stage_attributes['delimiter_format_type'] == 'CUSTOM':\n\t\tf = lambda ip_string: ip_string.format(quote_character=quote_character,\n\t\t\t\t\t\t\t\t\t\t\t   delimiter_character=delimiter_character)\n\t\tDATA = [[f('{quote_character}Field11{delimiter_character}{quote_character}'), 'Field12',\n\t\t\t\t f('{quote_character},Field13{quote_character}')],\n\t\t\t\t[f('{quote_character}Field{delimiter_character}21{quote_character}'), 'Field22', 'Field23']]\n\t\tfile_content = '\\n'.join([delimiter_character.join(t1) for t1 in DATA])\n\t\tEXPECTED_OUTPUT = [OrderedDict([('0', 'Field11^'), ('1', 'Field12'), ('2', ',Field13')]),\n\t\t\t\t\t\t   OrderedDict([('0', 'Field^21'), ('1', 'Field22'), ('2', 'Field23')])]\n\telse:\n\t\tf = lambda ip_string: ip_string.format(quote_character=quote_character,\n\t\t\t\t\t\t\t\t\t\t\t   multi_character_field_delimiter=multi_character_field_delimiter)\n\t\tDATA = [[f('{quote_character}Field11{multi_character_field_delimiter}{quote_character}'), 'Field12',\n\t\t\t\t f('{quote_character},Field13{quote_character}')],\n\t\t\t\t[f('{quote_character}Field{multi_character_field_delimiter}21{quote_character}'), 'Field22', 'Field23']]\n\t\tfile_content = '\\n'.join([multi_character_field_delimiter.join(t1) for t1 in DATA])\n\t\tEXPECTED_OUTPUT = [OrderedDict([('0', 'Field11||'), ('1', 'Field12'), ('2', ',Field13')]),\n\t\t\t\t\t\t   OrderedDict([('0', 'Field||21'), ('1', 'Field22'), ('2', 'Field23')])]",
       "assertion" : "\n\tassert output_records == EXPECTED_OUTPUT"
     }
+  },
+  "test_on_parse_error": {
+    "LOG": {
+      "input_data": "\tfile_content = '\\n'.join(['0 [main] ERROR test.pack.Log4J  - first message',\n\t\t\t\t\t\t\t  '0 DEBUG test.pack.Log4J  - second message',\n\t\t\t\t\t\t\t  '1 [main] DEBUG test.pack.Log4J  - third message'])",
+      "assertion": "\n\t\tif stage_attributes['on_parse_error'] == 'ERROR':\n\t\t\tassert output_records == []\n\t\telif stage_attributes['on_parse_error'] == 'IGNORE':\n\t\t\tassert output_records[0].field['message'] == 'first message'\n\t\t\tassert output_records[1].field['message'] == 'third message'\n\t\telse:\n\t\t\tassert output_records[0].field['message'] == 'first message\\n0 DEBUG test.pack.Log4J  - second message'\n\t\t\tassert output_records[1].field['message'] == 'third message'"
+    }
+  },
+  "test_max_object_length_in_chars": {
+    "JSON": {
+      "parametrize": "@pytest.mark.parametrize('char_length', [2, 1024])",
+      "sa_update" : "\n\t\trabbitmq_consumer.max_object_length_in_chars = char_length",
+      "input_data": "\tx = {\"name\": \"John\", \"age\": 30, \"city\": \"New York\"}\n\tinput_data = json.dumps(x)\n\texpected_data = [{'name': 'John', 'age': 30, 'city': 'New York'}]",
+      "assertion": "\n\t\tif char_length == 2:\n\t\t\tassert sdc_executor.get_stage_errors(consumer_origin_pipeline, rabbitmq_consumer)[0].error_code == \\\n\t\t\t\t   'RABBITMQ_04'\n\t\telse:\n\t\t\toutput_records = [record.field for record in snapshot[rabbitmq_consumer.instance_name].output]\n\t\t\tassert expected_data == output_records"
+    }
   }
  }

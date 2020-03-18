@@ -9,6 +9,7 @@ try:
 
     # Reading test case file name and arguments from command line
     file_name = sys.argv[1]
+    # file_path = f'{DataCollectorPath}/stage/configuration/{file_name}'
     test_case = sys.argv[2]
     with open(file_name, 'r') as f:
         lines = f.readlines()

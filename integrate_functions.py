@@ -1,5 +1,7 @@
 from utility_functions import get_start_and_end_line_number_of_tc
+# from code_gen.CodeGenerator import generate_code
 
+# maintaining a dictionary for keeping the stage holders that would be passed to the function arguments
 marker_holder = {'mqtt': 'mqtt_broker'}
 
 
@@ -19,6 +21,10 @@ def integrate_test_case(file_name, tc_lines, test_case, input_data, parametrize,
     # Updating the test case function with the required arguments
     tc_lines[test_case_line_num] = f"{tc_lines[test_case_line_num].split('):')[0]}, {marker_test_case_argument}{extra_arguments_comma_sepa}):\n"
 
+    # print('dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd')
+    # print(CodeGenerator.generate_code('dd_branch', file_name, test_case))
+
+    # Replacing the default test case lines with the updated code.
     for line_num in range(len(tc_lines)):
         if tc_lines[line_num] == '@stub\n':
             tc_lines[line_num] = f'@{test_case_marker}\n{parametrize}'
