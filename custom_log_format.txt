@@ -1,0 +1,9 @@
+   INPUT_DATA = ('127.0.0.1 custom_log test_user [09/May/2019:13:55:36 -0700] "GET /apache_pb.gif HTTP/1.0" 200 '
+                  '2326 "http://almhuette-raith.at/administrator/" "Mozilla/5.0 (Windows NT 6.0; rv:34.0) '
+                   'Gecko/20100101 Firefox/34.0"')
+   EXPECTED_DATA = {'remoteUser': 'test_user', 'requestTime': '09/May/2019:13:55:36 -0700', 'request':
+                   'GET /apache_pb.gif HTTP/1.0', 'referer': 'http://almhuette-raith.at/administrator/', 'logName':
+                   'custom_log', 'remoteHost': '127.0.0.1', 'userAgent':
+                   'Mozilla/5.0 (Windows NT 6.0; rv:34.0) Gecko/20100101 Firefox/34.0', 'bytesSent': '2326',
+                   'status': '200'}
+   #note:set custom_log_format='%h %l %u [%t] "%r" %>s %b "%{Referer}i" "%{User-agent}i"'

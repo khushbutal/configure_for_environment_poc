@@ -1,0 +1,7 @@
+file_content = [['column1', 'column2', 'column3'], ['Field11', 'Field12', 'Field13', 'Field14', 'Field15'],
+                    ['Field21', 'Field22', 'Field23']]
+    EXPECTED_OUTPUT_ALLOW_EXTRA_COLUMNS = [
+        OrderedDict([('column1', 'Field11'), ('column2', 'Field12'), ('column3', 'Field13'),
+                     ('_extra_01', 'Field14'), ('_extra_02', 'Field15')]),
+        OrderedDict([('column1', 'Field21'), ('column2', 'Field22'), ('column3', 'Field23')])]
+    INPUT_DATA = '\n'.join([','.join(line) for line in file_content])

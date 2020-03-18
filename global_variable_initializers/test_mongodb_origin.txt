@@ -1,0 +1,5 @@
+ORIG_DOCS = [
+    {'name': 'Flute'},
+    {'name': 'Oboe'},
+    {'name': 'Violin'}
+]

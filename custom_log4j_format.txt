@@ -1,0 +1,3 @@
+INPUT_DATA = '200 [main] DEBUG org.StreamSets.Log4j unknown - This is sample log message'
+EXPECTED_DATA = {'severity': 'DEBUG', 'relativetime': '200', 'thread': 'main', 'category': 'org.StreamSets.Log4j',
+                  'ndc': 'unknown', 'message': 'This is sample log message'}
