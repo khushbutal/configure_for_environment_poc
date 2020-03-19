@@ -2,6 +2,7 @@ from utility_functions import get_start_and_end_line_number_of_tc, check_word
 import fileinput
 import os
 import sys
+import subprocess
 from UserSetiing import DataCollectorPath
 from TestCaseBodyCode import Body_code
 from pipelineBuilderCode import PipelineBuilderCode
@@ -13,13 +14,29 @@ from global_variable_initializers.GlobalVariableInitializer import GlobalVariabl
 marker_holder = {'mqtt': 'mqtt_broker'}
 
 
-def integrate_test_case(file_name, lines, tc_lines, test_case, get_start_end_lines_of_tc, input_data, parametrize,
+def integrate_test_case(gitbranch, file_name, lines, tc_lines, test_case, get_start_end_lines_of_tc, input_data, parametrize,
                         expected_output, assertion, sa_update):
     file_name_path = f'{DataCollectorPath}/stage/configuration/{file_name}'
     test_case_marker = file_name.split('/')[-1].split('_')[1]
 
+    # os.chdir(f'{DataCollectorPath}')
+    # logger.info(f'creating a git branch {gitbranch}')
+    # print(os.getcwd())
+    # cmd1 = 'git checkout master'
+    # cmd2 = f'git checkout -b {gitbranch}'
+    # subprocess.call(cmd1, shell=True)
+    # subprocess.call('git reset --hard origin/master', shell=True)
+    # subprocess.call('git pull', shell=True)
+    # result = subprocess.call(cmd2, shell=True)
+    # if not result:
+    #     logger.info(f'successfully created git branch {gitbranch}')
+    #     logger.info("generating code")
+    #     generate_code(gitbranch, file_name, test_case)
+        # call your function here - this will put the input and expected data
+        # call your second function - this will paramatrize and remove @stub
+
     # Remove the original test case lines
-    print(get_start_end_lines_of_tc)
+    # print(get_start_end_lines_of_tc)
     test_case_line_num, start_line_no_of_tc, end_line_no_of_tc = get_start_end_lines_of_tc
     del lines[start_line_no_of_tc:end_line_no_of_tc]
 
@@ -30,6 +47,9 @@ def integrate_test_case(file_name, lines, tc_lines, test_case, get_start_end_lin
     else:
         extra_arguments_comma_sepa = ""
 
+    # print('trtttttttttttttttttttttttttttttttttttttttttttttttttttt')
+    # print(tc_lines)
+    # print('eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee')
     test_case_line_num = get_start_and_end_line_number_of_tc(tc_lines, test_case)[0]
 
     marker_test_case_argument = marker_holder[test_case_marker] if test_case_marker in marker_holder else test_case_marker
@@ -49,7 +69,7 @@ def integrate_test_case(file_name, lines, tc_lines, test_case, get_start_end_lin
     body_code = body_code_object.get_body_code()
     body_code_lines = body_code.split('\n')
     finally_line_num = check_word(body_code_lines, '    finally:', False)[1][0]
-    print(finally_line_num)
+    # print(finally_line_num)
     body_code_lines[finally_line_num] = assertion + '\n' + body_code_lines[finally_line_num]
     body_code = '\n'.join(body_code_lines)
     tc_lines.append(body_code)

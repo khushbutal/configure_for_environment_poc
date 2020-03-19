@@ -19,14 +19,11 @@ def check_word(lines, word, is_print):
 
 def get_start_and_end_line_number_of_tc(lines, test_case):
     try:
-        # print(test_case)
-        # If test case name is not found in the file just return
-        # print(check_word(lines, test_case, False))
         if len(check_word(lines, test_case, False)[1]) == 0:
             return 'skip_test_case'
         start_line_no = check_word(lines, test_case, False)[1][0]
         intial_start_line_no = start_line_no
-        print('test case starting line number: ', start_line_no, lines[start_line_no])
+        # print('test case starting line number: ', start_line_no, lines[start_line_no])
         # For starting line go up(decrement)
         # print(lines[start_line_no])
         while True:
