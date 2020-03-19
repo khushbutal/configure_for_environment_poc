@@ -1,5 +1,4 @@
-from utility_functions import get_start_and_end_line_number_of_tc
-import CodeGenerator
+from utility_functions import get_start_and_end_line_number_of_tc, check_word
 import fileinput
 import os
 import sys
@@ -47,9 +46,14 @@ def integrate_test_case(file_name, lines, tc_lines, test_case, get_start_end_lin
     tc_lines.append(sa_update)
     # generates body code inside test case
     body_code_object = Body_code(file_name, tc_lines[test_case_line_num])
-    code = body_code_object.get_body_code()
-    tc_lines.append(code)
-    tc_lines.append(assertion)
+    body_code = body_code_object.get_body_code()
+    body_code_lines = body_code.split('\n')
+    finally_line_num = check_word(body_code_lines, '    finally:', False)[1][0]
+    print(finally_line_num)
+    body_code_lines[finally_line_num] = assertion + '\n' + body_code_lines[finally_line_num]
+    body_code = '\n'.join(body_code_lines)
+    tc_lines.append(body_code)
+    # tc_lines.append(assertion)
 
     # Adding modified tc_lines into the lines(original)
     final_tc_lines = lines[:start_line_no_of_tc] + tc_lines + ['\n\n\n'] + lines[start_line_no_of_tc:]

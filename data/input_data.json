@@ -1,10 +1,11 @@
 {
   "test_parse_nulls": {
     "DELIMITED":{
+      "_comment" : "stage/configuration/test_mqtt_subscriber_origin.py",
       "sa_update" :  "\n\tif stage_attributes['parse_nulls']:\n\t\tstage_attributes.update({'null_constant': 'Field21'})",
       "input_data" :  "\tINPUT_DATA = [['header1', 'header2', 'header3'], ['Field11', 'Field12', 'Field13'], ['Field21', 'Field22','Field23']]\n\tINPUT_DATA_STR = '\\n'.join([','.join(line) for line in INPUT_DATA])",
       "expected_output" :  "\n\tEXPECTED_OUTPUT_NONE = OrderedDict([('header1', None), ('header2', 'Field22'), ('header3', 'Field23')])\n\tEXPECTED_OUTPUT = OrderedDict([('header1', 'Field21'), ('header2', 'Field22'), ('header3', 'Field23')])",
-      "assertion" : "\n\tif stage_attributes['parse_nulls']:\n\t\tassert records[1] == EXPECTED_OUTPUT_NONE\n\telse:\n\t\tassert records[1] == EXPECTED_OUTPUT"
+      "assertion" : "\n\t\tif stage_attributes['parse_nulls']:\n\t\t\tassert records[1] == EXPECTED_OUTPUT_NONE\n\t\telse:\n\t\t\tassert records[1] == EXPECTED_OUTPUT"
 	}
   },
 
@@ -25,9 +26,9 @@
   "test_max_object_length_in_chars": {
     "JSON": {
       "parametrize": "@pytest.mark.parametrize('char_length', [2, 1024])",
-      "sa_update" : "\n\t\trabbitmq_consumer.max_object_length_in_chars = char_length",
+      "sa_update" : "\n\trabbitmq_consumer.max_object_length_in_chars = char_length",
       "input_data": "\tx = {\"name\": \"John\", \"age\": 30, \"city\": \"New York\"}\n\tinput_data = json.dumps(x)\n\texpected_data = [{'name': 'John', 'age': 30, 'city': 'New York'}]",
-      "assertion": "\n\t\tif char_length == 2:\n\t\t\tassert sdc_executor.get_stage_errors(consumer_origin_pipeline, rabbitmq_consumer)[0].error_code == \\\n\t\t\t\t   'RABBITMQ_04'\n\t\telse:\n\t\t\toutput_records = [record.field for record in snapshot[rabbitmq_consumer.instance_name].output]\n\t\t\tassert expected_data == output_records"
+      "assertion": "\t\tif char_length == 2:\n\t\t\tassert sdc_executor.get_stage_errors(consumer_origin_pipeline, rabbitmq_consumer)[0].error_code == \\\n\t\t\t\t   'RABBITMQ_04'\n\t\telse:\n\t\t\toutput_records = [record.field for record in snapshot[rabbitmq_consumer.instance_name].output]\n\t\t\tassert expected_data == output_records"
     }
   }
  }

@@ -23,8 +23,7 @@ class Body_code:
             defualt_stage_attributes = """
     stage_attributes={'topic_filter':data_topic}"""
             set_attribute = "stage_attributes.update({'topic_filter':[data_topic]})" if 'stage_attributes' in self.line else defualt_stage_attributes
-            line = f"""{self.line[0:len(self.line)-3]}, mqtt_broker):
-    {self.input_data}
+            line = f"""{self.input_data}
     data_topic = 'mqtt_subscriber_topic'
     {set_attribute}
     try:
@@ -152,8 +151,7 @@ class Body_code:
                           'auto_delete':False, 
                           'bindings':[]}"""
             set_attribute = "stage_attributes.update({'name':name})" if 'stage_attributes' in self.line else default_stage_attributes
-            line = f"""{self.line[0:len(self.line) - 3]}, rabbitmq):
-    {self.input_data}
+            line = f"""{self.input_data}
     name = get_random_string()
     {set_attribute}
     try:
@@ -183,7 +181,6 @@ class Body_code:
         snapshot = sdc_executor.capture_snapshot(pipeline, start_pipeline=True).snapshot
         sdc_executor.stop_pipeline(pipeline)
         #assertion logic
-    
     finally:
         channel.close()
         connection.close()
