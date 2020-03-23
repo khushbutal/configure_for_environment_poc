@@ -19,21 +19,19 @@ def integrate_test_case(gitbranch, file_name, lines, tc_lines, test_case, get_st
     file_name_path = f'{DataCollectorPath}/stage/configuration/{file_name}'
     test_case_marker = file_name.split('/')[-1].split('_')[1]
 
-    # os.chdir(f'{DataCollectorPath}')
-    # logger.info(f'creating a git branch {gitbranch}')
-    # print(os.getcwd())
-    # cmd1 = 'git checkout master'
-    # cmd2 = f'git checkout -b {gitbranch}'
-    # subprocess.call(cmd1, shell=True)
-    # subprocess.call('git reset --hard origin/master', shell=True)
-    # subprocess.call('git pull', shell=True)
-    # result = subprocess.call(cmd2, shell=True)
-    # if not result:
-    #     logger.info(f'successfully created git branch {gitbranch}')
-    #     logger.info("generating code")
-    #     generate_code(gitbranch, file_name, test_case)
-        # call your function here - this will put the input and expected data
-        # call your second function - this will paramatrize and remove @stub
+    os.chdir(f'{DataCollectorPath}')
+    logger.info(f'creating a git branch {gitbranch}')
+    print(os.getcwd())
+    cmd1 = 'git checkout master'
+    cmd2 = f'git checkout -b {gitbranch}'
+    subprocess.call(cmd1, shell=True)
+    subprocess.call('git reset --hard origin/master', shell=True)
+    subprocess.call('git pull', shell=True)
+    result = subprocess.call(cmd2, shell=True)
+    if not result:
+        logger.info(f'successfully created git branch {gitbranch}')
+        logger.info("generating code")
+        # generate_code(gitbranch, file_name, test_case)
 
     # Remove the original test case lines
     # print(get_start_end_lines_of_tc)
