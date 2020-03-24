@@ -1,4 +1,29 @@
-def check_word(lines, word, is_print):
+from loggerUtility import logger
+from UserSetiing import DataCollectorPath
+import subprocess
+import os
+
+
+def create_git_branch(gitbranch):
+    try:
+        os.chdir(f'{DataCollectorPath}')
+        logger.info(f'creating a git branch {gitbranch}')
+        cmd1 = 'git checkout master'
+        cmd2 = f'git checkout -b {gitbranch}'
+        subprocess.call(cmd1, shell=True)
+        subprocess.call('git reset --hard origin/master',shell=True)
+        subprocess.call('git pull', shell=True)
+        result = subprocess.call(cmd2, shell=True)
+        if not result:
+            logger.info(f'successfully created git branch {gitbranch}')
+            logger.info("generating code")
+        else:
+            raise Exception(f'git branch {gitbranch} already exist')
+    except Exception as error:
+        logger.error(error)
+
+
+def check_word(lines, word):
     is_word_found = False
     occurrences = []
     occurrence_lines = []
@@ -10,18 +35,16 @@ def check_word(lines, word, is_print):
                 occurrences.append(line_count)
                 occurrence_lines.append(line)
             line_count += 1
-        if not is_word_found and is_print:
-            print(f'\t\x1b[1;31m{word} \x1b[0mis not found')
         return is_word_found, occurrences, occurrence_lines
-    except:
-        pass
+    except Exception as error:
+        logger.exception(error)
 
 
 def get_start_and_end_line_number_of_tc(lines, test_case):
     try:
-        if len(check_word(lines, test_case, False)[1]) == 0:
+        if len(check_word(lines, test_case)[1]) == 0:
             return 'skip_test_case'
-        start_line_no = check_word(lines, test_case, False)[1][0]
+        start_line_no = check_word(lines, test_case)[1][0]
         intial_start_line_no = start_line_no
         # print('test case starting line number: ', start_line_no, lines[start_line_no])
         # For starting line go up(decrement)
@@ -58,5 +81,5 @@ def get_start_and_end_line_number_of_tc(lines, test_case):
 
         # print(start_line_no, end_line_no)
         return intial_start_line_no, start_line_no, end_line_no
-    except:
-        pass
+    except Exception as error:
+        logger.exception(error)

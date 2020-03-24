@@ -1,18 +1,20 @@
-import re, ast
+import re
+import ast
+from loggerUtility import logger
 from utility_functions import check_word
 
 
 def get_stage_attributes(tc_lines, test_case, word):
     stage_attribute_lines = []
     try:
-        pytest_mark_parametrize_lines = check_word(tc_lines, word, False)
+        pytest_mark_parametrize_lines = check_word(tc_lines, word)
         if len(pytest_mark_parametrize_lines[1]) > 1:
             start_sa, end_sa = pytest_mark_parametrize_lines[1][:2]
             stage_attribute_lines = [line.rstrip() for line in tc_lines[start_sa: end_sa]]
             if stage_attribute_lines[len(stage_attribute_lines) - 1] == '':
                 stage_attribute_lines = stage_attribute_lines[:len(stage_attribute_lines) - 1]
         elif len(pytest_mark_parametrize_lines[1]) == 1:
-            test_case_def_line_num = check_word(tc_lines, test_case, False)[1][0]
+            test_case_def_line_num = check_word(tc_lines, test_case)[1][0]
             start_sa, end_sa = pytest_mark_parametrize_lines[1][0], test_case_def_line_num
             stage_attribute_lines = [line.rstrip() for line in tc_lines[start_sa: end_sa]]
         stage_attribute_lines = ''.join(stage_attribute_lines)
@@ -28,5 +30,5 @@ def get_stage_attributes(tc_lines, test_case, word):
             else:
                 unique_attributes['data_format'].add(sa['data_format'])
         return unique_attributes
-    except:
-        pass
+    except Exception as error:
+        logger.exception(error)
