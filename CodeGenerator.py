@@ -5,7 +5,7 @@ from pipelineBuilderCode import PipelineBuilderCode
 from LibraryImporter import Import
 from loggerUtility import logger
 from global_variable_initializers.GlobalVariableInitializer import GlobalVariable
-from utility_functions import get_start_and_end_line_number_of_tc, check_word
+from utility_functions import get_start_and_end_line_number_of_tc, check_word, create_doc_string
 
 # maintaining a dictionary for keeping the stage holders that would be passed to the function arguments
 marker_holder = {'mqtt': 'mqtt_broker'}
@@ -28,6 +28,7 @@ def generate_imports_and_pipeline_code(file_name_path, test_case, tc_lines, test
         pipeline_builder_object = PipelineBuilderCode(file_name, tc_lines[test_case_line_num])
         build_pipeline = pipeline_builder_object.build_pipeline()
         build_pipeline_code = build_pipeline
+        # print(build_pipeline_code)
         f.write(build_pipeline_code)
     # setting global variable at the top if the test case or file need to set it
     global_object = GlobalVariable(file_name_path, test_case, file_name)
@@ -35,10 +36,12 @@ def generate_imports_and_pipeline_code(file_name_path, test_case, tc_lines, test
     logger.info("successfully generated code ")
 
 
-def generate_data(file_name_path, file_name, lines, tc_lines, test_case, get_start_end_lines_of_tc, input_data,
-                  parametrize, expected_output, assertion, sa_update):
+def generate_data(file_name_path, file_name, lines, tc_lines, test_case, get_start_end_lines_of_tc, doc_string,
+                  input_data, parametrize, expected_output, assertion, sa_update):
     test_case_marker = file_name.split('/')[-1].split('_')[1]
     test_case_line_num, start_line_no_of_tc, end_line_no_of_tc = get_start_end_lines_of_tc
+    # print('ggggggggggggggggggggg')
+    # print(test_case_line_num)
     del lines[start_line_no_of_tc:end_line_no_of_tc]
 
     if len(parametrize) > 0:
@@ -60,7 +63,8 @@ def generate_data(file_name_path, file_name, lines, tc_lines, test_case, get_sta
         if tc_lines[line_num] == '@stub\n':
             tc_lines[line_num] = f'@{test_case_marker}\n{parametrize}'
         elif tc_lines[line_num] == '    pass\n':
-            tc_lines[line_num] = input_data.rstrip()
+            tc_lines[line_num] = create_doc_string(file_name, test_case, doc_string) + '\n'
+            tc_lines[line_num] += input_data.rstrip()
     tc_lines.append(expected_output)
     tc_lines.append(sa_update)
     # generates body code inside test case

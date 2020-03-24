@@ -83,3 +83,13 @@ def get_start_and_end_line_number_of_tc(lines, test_case):
         return intial_start_line_no, start_line_no, end_line_no
     except Exception as error:
         logger.exception(error)
+
+
+def create_doc_string(file_name, test_case, doc_string):
+    stage_name_doc_string = file_name[5:][:-3].replace('_', ' ')
+    test_case_name_doc_string = test_case[5:].replace('_', ' ')
+
+    doc_string_first_line =  f'check {stage_name_doc_string} can honour {test_case_name_doc_string} configuration.\n\n\t'
+
+    doc_string_final = doc_string.replace('"""', '"""' + doc_string_first_line, 1)
+    return doc_string_final
