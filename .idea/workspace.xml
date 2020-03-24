@@ -3,7 +3,9 @@
   <component name="ChangeListManager">
     <list default="true" id="f329340a-83a6-41f6-8f51-b79e9974a122" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/archive/CodeGenerator.py" beforeDir="false" afterPath="$PROJECT_DIR$/CodeGenerator.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/integrate_functions.py" beforeDir="false" afterPath="$PROJECT_DIR$/integrate_functions.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/shellExecutor.py" beforeDir="false" afterPath="$PROJECT_DIR$/shellExecutor.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -13,14 +15,57 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/shellExecutor.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="51">
+              <caret line="7" column="54" selection-start-line="7" selection-start-column="4" selection-end-line="7" selection-end-column="54" />
+              <folding>
+                <element signature="e#0#32#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/integrate_functions.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="219">
-              <caret line="33" column="20" selection-start-line="33" selection-start-column="20" selection-end-line="33" selection-end-column="20" />
+            <state relative-caret-position="372">
+              <caret line="22" column="12" lean-forward="true" selection-start-line="22" selection-start-column="12" selection-end-line="22" selection-end-column="12" />
               <folding>
                 <element signature="e#0#77#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/CodeGenerator.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="176">
+              <caret line="43" column="17" selection-start-line="43" selection-start-column="4" selection-end-line="43" selection-end-column="17" />
+              <folding>
+                <element signature="e#0#16#0" expanded="true" />
+                <element signature="e#1667#3596#0" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/utility_functions.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="391">
+              <caret line="23" column="65" lean-forward="true" selection-start-line="23" selection-start-column="65" selection-end-line="23" selection-end-column="65" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/pipelineBuilderCode.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="17">
+              <caret line="1" column="8" selection-start-line="1" selection-start-column="8" selection-end-line="1" selection-end-column="8" />
             </state>
           </provider>
         </entry>
@@ -35,31 +80,13 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/shellExecutor.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="136">
-              <caret line="8" column="8" lean-forward="true" selection-start-line="8" selection-start-column="8" selection-end-line="8" selection-end-column="8" />
-              <folding>
-                <element signature="e#0#32#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/main_poc.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state>
-              <caret column="27" selection-start-column="27" selection-end-column="27" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/utility_functions.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="510">
-              <caret line="30" column="35" selection-start-line="30" selection-start-column="35" selection-end-line="30" selection-end-column="35" />
+            <state relative-caret-position="102">
+              <caret line="6" selection-start-line="6" selection-end-line="6" />
+              <folding>
+                <element signature="e#0#27#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -67,7 +94,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/data/input_data.json">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="139">
+            <state relative-caret-position="578">
               <caret line="34" column="5" selection-start-line="34" selection-start-column="5" selection-end-line="34" selection-end-column="5" />
             </state>
           </provider>
@@ -84,19 +111,9 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>test_case.txt</find>
-      <find>input_data.json</find>
-      <find>CodeGenerator</find>
-      <find>rabbitmq_consumer.max_object_length_in_chars = char_length</find>
-      <find>check</find>
-      <find>check_word</find>
-      <find>get_pipeline_and_rebbitmq_consumer_stage</find>
-      <find>mqtt</find>
-      <find># write your assertion code here</find>
       <find>test_http_client_origin.py</find>
       <find>file_content</find>
       <find>\\t</find>
-      <find>get_start_and_end_line_number_of_tc</find>
       <find>successfully generated code</find>
       <find>integrate_test_case</find>
       <find>EXPECTED_OUTPUT_XML = [{'8/12/2016 6:01:00': 'GET /index.html 200'}]</find>
@@ -114,6 +131,16 @@
       <find>rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr</find>
       <find>test case starting line number</find>
       <find>print</find>
+      <find>shelle</find>
+      <find>get_start_and_end_line_number_of_tc</find>
+      <find>marker_holder</find>
+      <find>test_case_marker</find>
+      <find>PipelineBuilderCode(file_name, tc_lines[test_case_line_num])</find>
+      <find>get_start_end_lines_of_tc</find>
+      <find>generate_imports_and_pipeline_code</find>
+      <find>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</find>
+      <find>test_case_line_num</find>
+      <find>generate_data</find>
     </findStrings>
     <replaceStrings>
       <replace>\t\t</replace>
@@ -135,11 +162,13 @@
         <option value="$PROJECT_DIR$/UserSetiing.py" />
         <option value="$PROJECT_DIR$/output.py" />
         <option value="$PROJECT_DIR$/TestCaseBodyCode.py" />
-        <option value="$PROJECT_DIR$/shellExecutor.py" />
         <option value="$PROJECT_DIR$/data/input_data.json" />
         <option value="$PROJECT_DIR$/main_poc.py" />
         <option value="$PROJECT_DIR$/read_input_data.py" />
+        <option value="$PROJECT_DIR$/shellExecutor.py" />
+        <option value="$PROJECT_DIR$/archive/CodeGenerator.py" />
         <option value="$PROJECT_DIR$/utility_functions.py" />
+        <option value="$PROJECT_DIR$/CodeGenerator.py" />
         <option value="$PROJECT_DIR$/integrate_functions.py" />
       </list>
     </option>
@@ -158,6 +187,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -169,13 +199,17 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
+    </key>
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -278,7 +312,7 @@
     <frame x="67" y="25" width="1299" height="743" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.12617555" />
+      <window_info content_ui="combo" id="Project" order="0" weight="0.04231975" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -313,13 +347,6 @@
     <entry file="file://$PROJECT_DIR$/empty_file.json" />
     <entry file="file://$PROJECT_DIR$/code_gen/CodeGenerator.py" />
     <entry file="file://$PROJECT_DIR$/code_gen/UserSetiing.py" />
-    <entry file="file://$PROJECT_DIR$/LibraryImporter.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-478">
-          <caret line="4" column="29" lean-forward="true" selection-start-line="4" selection-start-column="29" selection-end-line="4" selection-end-column="29" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/UserSetiing.py">
       <provider selected="true" editor-type-id="text-editor">
         <state>
@@ -330,7 +357,6 @@
     <entry file="file://$PROJECT_DIR$/input_data.json" />
     <entry file="file://$PROJECT_DIR$/output.py" />
     <entry file="file://$PROJECT_DIR$/test_case.txt" />
-    <entry file="file://$PROJECT_DIR$/CodeGenerator.py" />
     <entry file="file://$PROJECT_DIR$/get_stage_attributes.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="194">
@@ -355,17 +381,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/utility_functions.py">
+    <entry file="file://$PROJECT_DIR$/LibraryImporter.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="510">
-          <caret line="30" column="35" selection-start-line="30" selection-start-column="35" selection-end-line="30" selection-end-column="35" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/data/input_data.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="139">
-          <caret line="34" column="5" selection-start-line="34" selection-start-column="5" selection-end-line="34" selection-end-column="5" />
+        <state relative-caret-position="17">
+          <caret line="4" column="29" lean-forward="true" selection-start-line="4" selection-start-column="29" selection-end-line="4" selection-end-column="29" />
         </state>
       </provider>
     </entry>
@@ -376,27 +395,62 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/data/input_data.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="578">
+          <caret line="34" column="5" selection-start-line="34" selection-start-column="5" selection-end-line="34" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/main_poc.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="6" selection-start-line="6" selection-end-line="6" />
+          <folding>
+            <element signature="e#0#27#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pipelineBuilderCode.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="17">
+          <caret line="1" column="8" selection-start-line="1" selection-start-column="8" selection-end-line="1" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/utility_functions.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="391">
+          <caret line="23" column="65" lean-forward="true" selection-start-line="23" selection-start-column="65" selection-end-line="23" selection-end-column="65" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/CodeGenerator.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="176">
+          <caret line="43" column="17" selection-start-line="43" selection-start-column="4" selection-end-line="43" selection-end-column="17" />
+          <folding>
+            <element signature="e#0#16#0" expanded="true" />
+            <element signature="e#1667#3596#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/shellExecutor.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="8" column="8" lean-forward="true" selection-start-line="8" selection-start-column="8" selection-end-line="8" selection-end-column="8" />
+        <state relative-caret-position="51">
+          <caret line="7" column="54" selection-start-line="7" selection-start-column="4" selection-end-line="7" selection-end-column="54" />
           <folding>
             <element signature="e#0#32#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/main_poc.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="27" selection-start-column="27" selection-end-column="27" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/integrate_functions.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="219">
-          <caret line="33" column="20" selection-start-line="33" selection-start-column="20" selection-end-line="33" selection-end-column="20" />
+        <state relative-caret-position="372">
+          <caret line="22" column="12" lean-forward="true" selection-start-line="22" selection-start-column="12" selection-end-line="22" selection-end-column="12" />
           <folding>
             <element signature="e#0#77#0" expanded="true" />
           </folding>

@@ -1,6 +1,6 @@
 from loggerUtility import logger
 from UserSetiing import DataCollectorPath
-from CodeGenerator import generate_code
+# from CodeGenerator import generate_code
 import subprocess
 import os
 
@@ -19,7 +19,7 @@ def create_git_branch(gitbranch, file_name, test_case):
         if not result:
             logger.info(f'successfully created git branch {gitbranch}')
             logger.info("generating code")
-            generate_code(gitbranch, file_name, test_case)
+            # generate_code(gitbranch, file_name, test_case)
             #call your function here - this will put the input and expected data
             #call your second function - this will paramatrize and remove @stub
         else:
