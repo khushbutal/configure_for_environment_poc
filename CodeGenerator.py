@@ -28,7 +28,6 @@ def generate_imports_and_pipeline_code(file_name_path, test_case, tc_lines, test
         pipeline_builder_object = PipelineBuilderCode(file_name, tc_lines[test_case_line_num])
         build_pipeline = pipeline_builder_object.build_pipeline()
         build_pipeline_code = build_pipeline
-        # print(build_pipeline_code)
         f.write(build_pipeline_code)
     # setting global variable at the top if the test case or file need to set it
     global_object = GlobalVariable(file_name_path, test_case, file_name)
@@ -36,12 +35,16 @@ def generate_imports_and_pipeline_code(file_name_path, test_case, tc_lines, test
     logger.info("successfully generated code ")
 
 
-def generate_data(file_name_path, file_name, lines, tc_lines, test_case, get_start_end_lines_of_tc, doc_string,
+def generate_data(file_name_path, file_name, lines, tc_lines, test_case, get_start_end_lines_of_tc_in_lines, doc_string,
                   input_data, parametrize, expected_output, assertion, sa_update):
+    """Here we are updating test case code(tc_lines) only like doc_string, input_data, parametrize, etc..
+    Because we are deleting pass from lines, will just write updated tc_lines
+    into the lines(original) i.e. final_tc_lines  and write to stage file(file_name).
+    """
     test_case_marker = file_name.split('/')[-1].split('_')[1]
-    test_case_line_num, start_line_no_of_tc, end_line_no_of_tc = get_start_end_lines_of_tc
-    # print('ggggggggggggggggggggg')
-    # print(test_case_line_num)
+    test_case_line_num_in_tc_lines = get_start_and_end_line_number_of_tc(tc_lines, test_case)[0]
+    _, start_line_no_of_tc, end_line_no_of_tc = get_start_end_lines_of_tc_in_lines
+    # This will remove pass from lines.
     del lines[start_line_no_of_tc:end_line_no_of_tc]
 
     if len(parametrize) > 0:
@@ -51,24 +54,27 @@ def generate_data(file_name_path, file_name, lines, tc_lines, test_case, get_sta
     else:
         extra_arguments_comma_sepa = ""
 
-    test_case_line_num = get_start_and_end_line_number_of_tc(tc_lines, test_case)[0]
-
     marker_test_case_argument = marker_holder[
         test_case_marker] if test_case_marker in marker_holder else test_case_marker
     # Updating the test case function with the required arguments
-    tc_lines[test_case_line_num] = f"{tc_lines[test_case_line_num].split('):')[0]}, {marker_test_case_argument}{extra_arguments_comma_sepa}):\n"
+    tc_lines[test_case_line_num_in_tc_lines] = f"{tc_lines[test_case_line_num_in_tc_lines].split('):')[0]}, {marker_test_case_argument}{extra_arguments_comma_sepa}):\n"
 
     # Replacing the default test case lines with the updated code.
     for line_num in range(len(tc_lines)):
         if tc_lines[line_num] == '@stub\n':
             tc_lines[line_num] = f'@{test_case_marker}\n{parametrize}'
         elif tc_lines[line_num] == '    pass\n':
+            # print(tc_lines[test_case_line_num_in_tc_lines])
+            # pipeline_builder_object = PipelineBuilderCode(file_name, tc_lines[test_case_line_num_in_tc_lines])
+            # build_pipeline = pipeline_builder_object.build_pipeline()
+            # build_pipeline_code = build_pipeline
+            # print(build_pipeline_code)
             tc_lines[line_num] = create_doc_string(file_name, test_case, doc_string) + '\n'
             tc_lines[line_num] += input_data.rstrip()
     tc_lines.append(expected_output)
     tc_lines.append(sa_update)
     # generates body code inside test case
-    body_code_object = Body_code(file_name, tc_lines[test_case_line_num])
+    body_code_object = Body_code(file_name, tc_lines[test_case_line_num_in_tc_lines])
     body_code = body_code_object.get_body_code()
     body_code_lines = body_code.split('\n')
     finally_line_num = check_word(body_code_lines, '    finally:')[1][0]
@@ -83,4 +89,4 @@ def generate_data(file_name_path, file_name, lines, tc_lines, test_case, get_sta
         for item in final_tc_lines:
             output_file.write("%s" % item)
 
-    return tc_lines, test_case_line_num
+    return tc_lines, test_case_line_num_in_tc_lines
