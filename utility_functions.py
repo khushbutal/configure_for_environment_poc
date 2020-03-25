@@ -6,6 +6,7 @@ import os
 
 def create_git_branch(gitbranch):
     try:
+        check_flag = False   # this flag will help us to tell calling function about existence of the git branch
         os.chdir(f'{DataCollectorPath}')
         logger.info(f'creating a git branch {gitbranch}')
         cmd1 = 'git checkout master'
@@ -17,10 +18,13 @@ def create_git_branch(gitbranch):
         if not result:
             logger.info(f'successfully created git branch {gitbranch}')
             logger.info("generating code")
+            return check_flag
         else:
             raise Exception(f'git branch {gitbranch} already exist')
     except Exception as error:
+        check_flag = True
         logger.error(error)
+        return check_flag
 
 
 def check_word(lines, word):

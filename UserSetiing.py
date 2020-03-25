@@ -1,2 +1,2 @@
-DataCollectorPath = "/home/shravank/project/gerrit/datacollector-tests"
+DataCollectorPath = "/home/talentica-all.com/dimbeswarr/gitdirectory/datacollector-tests"
 dockerKillScriptPath = ""
