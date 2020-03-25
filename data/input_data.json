@@ -29,6 +29,7 @@
     "test_max_object_length_in_chars": {
     "JSON": {
       "_comment" : "stage/configuration/test_rabbitmq_consumer_origin.py",
+      "doc_string" : "\t\"\"\"verify max object length in char configuration for rabbitmq consumer origin.\n\n\tFor negative case(char_length=2) stage will not generate any output data as incoming data has more characters\n\tthan the limit we have set.For positive case stage will process the incoming data and send it to next stage\"\"\"",
       "parametrize": "@pytest.mark.parametrize('char_length', [2, 1024])",
       "sa_update" : "\n\trabbitmq_consumer.max_object_length_in_chars = char_length",
       "input_data": "\tx = {\"name\": \"John\", \"age\": 30, \"city\": \"New York\"}\n\tinput_data = json.dumps(x)\n\texpected_data = [{'name': 'John', 'age': 30, 'city': 'New York'}]",

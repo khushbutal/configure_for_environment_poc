@@ -64,12 +64,16 @@ def generate_data(file_name_path, file_name, lines, tc_lines, test_case, get_sta
         if tc_lines[line_num] == '@stub\n':
             tc_lines[line_num] = f'@{test_case_marker}\n{parametrize}'
         elif tc_lines[line_num] == '    pass\n':
-            # print(tc_lines[test_case_line_num_in_tc_lines])
-            # pipeline_builder_object = PipelineBuilderCode(file_name, tc_lines[test_case_line_num_in_tc_lines])
-            # build_pipeline = pipeline_builder_object.build_pipeline()
-            # build_pipeline_code = build_pipeline
-            # print(build_pipeline_code)
-            tc_lines[line_num] = create_doc_string(file_name, test_case, doc_string) + '\n'
+
+            pipeline_builder_object = PipelineBuilderCode(file_name, tc_lines[test_case_line_num_in_tc_lines])
+            build_pipeline = pipeline_builder_object.build_pipeline()
+            build_pipeline_code = build_pipeline
+            build_pipeline_code_list = build_pipeline_code.split('\n')
+            pipeline_lines = ""
+            for pipeline_line in check_word(build_pipeline_code_list, '>>')[2]:
+                pipeline_lines += pipeline_line.lstrip()
+
+            tc_lines[line_num] = create_doc_string(file_name, test_case, doc_string, pipeline_lines) + '\n'
             tc_lines[line_num] += input_data.rstrip()
     tc_lines.append(expected_output)
     tc_lines.append(sa_update)

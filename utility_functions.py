@@ -85,11 +85,10 @@ def get_start_and_end_line_number_of_tc(lines, test_case):
         logger.exception(error)
 
 
-def create_doc_string(file_name, test_case, doc_string):
+def create_doc_string(file_name, test_case, doc_string, pipeline_lines):
     stage_name_doc_string = file_name[5:][:-3].replace('_', ' ')
     test_case_name_doc_string = test_case[5:].replace('_', ' ')
-
-    doc_string_first_line =  f'check {stage_name_doc_string} can honour {test_case_name_doc_string} configuration.\n\n\t'
-
-    doc_string_final = doc_string.replace('"""', '"""' + doc_string_first_line, 1)
+    doc_string_first_line = f'check {stage_name_doc_string} can honour {test_case_name_doc_string} configuration.\n\n\t'
+    doc_string_updated = doc_string.replace('"""', '"""' + doc_string_first_line, 1)
+    doc_string_final = '\t"' + doc_string_updated[2:].replace('"""', '\n\tpipeline looks like \n\t\t'+ pipeline_lines + '"""', 1)
     return doc_string_final
