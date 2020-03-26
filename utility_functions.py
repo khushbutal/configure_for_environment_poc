@@ -6,18 +6,21 @@ import os
 
 def create_git_branch(gitbranch):
     try:
+        # Storing cwd path
+        cwd_path = os.getcwd()
         check_flag = False   # this flag will help us to tell calling function about existence of the git branch
         os.chdir(f'{DataCollectorPath}')
         logger.info(f'creating a git branch {gitbranch}')
         cmd1 = 'git checkout master'
         cmd2 = f'git checkout -b {gitbranch}'
         subprocess.call(cmd1, shell=True)
-        subprocess.call('git reset --hard origin/master',shell=True)
-        subprocess.call('git pull', shell=True)
+        # subprocess.call('git reset --hard origin/master',shell=True)
+        # subprocess.call('git pull', shell=True)
         result = subprocess.call(cmd2, shell=True)
         if not result:
             logger.info(f'successfully created git branch {gitbranch}')
-            logger.info("generating code")
+            # Restoring to cwd path
+            os.chdir(cwd_path)
             return check_flag
         else:
             raise Exception(f'git branch {gitbranch} already exist')
