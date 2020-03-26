@@ -16,7 +16,7 @@ def read_input_data_from_json_file(filename, test_case, unique_attributes):
 
                     input_data += input_data_tmp
                     if run_only_once:
-                        doc_string = json_data[test_case][df]['doc_string']
+                        doc_string = json_data[test_case][df]['doc_string'] if 'doc_string' in json_data[test_case][df] else ""
                         parametrize = json_data[test_case][df]['parametrize'] if 'parametrize' in json_data[test_case][df] else ""
                         run_only_once = False
                     expected_output += expected_output_tmp

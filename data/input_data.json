@@ -11,6 +11,7 @@
 
   "test_quote_character": {
     "DELIMITED": {
+      "doc_string" : "\t\"\"\"Verify the quote character configuration for 'rabbitmq consumer origin'.\n\n\tInput data fields have delimiter characters. rabbitmq consumer origin should read this data and produce\n\tfield without escape character. e.g. ;|Field is value of field with \"|\" as delimiter character and \";\" as\n\tquote character then output field should be \"|Field\"\"\"",
       "_comment" : "stage/configuration/test_mqtt_subscriber_origin.py,  test_rabbitmq_consumer_origin",
       "parametrize" : "@pytest.mark.parametrize('quote_character', ['\t', ';', ' '])\n@pytest.mark.parametrize('multi_character_field_delimiter', ['||'])\n@pytest.mark.parametrize('delimiter_character', ['^'])",
       "sa_update" : "\n\t\tstage_attributes.update({'quote_character': quote_character,\n\t\t\t\t\t\t\t\t 'delimiter_character': delimiter_character})",
