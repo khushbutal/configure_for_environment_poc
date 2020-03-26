@@ -1,7 +1,7 @@
+import os
+import subprocess
 from loggerUtility import logger
 from UserSetiing import DataCollectorPath
-import subprocess
-import os
 
 
 def create_git_branch(gitbranch):
@@ -14,8 +14,8 @@ def create_git_branch(gitbranch):
         cmd1 = 'git checkout master'
         cmd2 = f'git checkout -b {gitbranch}'
         subprocess.call(cmd1, shell=True)
-        # subprocess.call('git reset --hard origin/master',shell=True)
-        # subprocess.call('git pull', shell=True)
+        subprocess.call('git reset --hard origin/master',shell=True)
+        subprocess.call('git pull', shell=True)
         result = subprocess.call(cmd2, shell=True)
         if not result:
             logger.info(f'successfully created git branch {gitbranch}')

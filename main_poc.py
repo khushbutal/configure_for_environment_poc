@@ -1,12 +1,13 @@
-import get_stage_attributes
-import read_input_data
-from loggerUtility import logger
-from utility_functions import get_start_and_end_line_number_of_tc
-import integrate_functions
-from UserSetiing import DataCollectorPath
-import sys
 import json
 import os
+import sys
+import get_stage_attributes
+import read_input_data
+import integrate_functions
+
+from loggerUtility import logger
+from utility_functions import get_start_and_end_line_number_of_tc
+from UserSetiing import DataCollectorPath
 from utility_functions import create_git_branch
 
 
@@ -53,9 +54,8 @@ if __name__ == '__main__':
 
             output_from_read_input_data_from_json_file = read_input_data.read_input_data_from_json_file(
                 'data/input_data.json', test_case, unique_attributes)
-            integrate_functions.integrate_test_case(run_only_once, git_branch, file_name, lines, tc_lines,
-                                                    test_case,
-                                                    get_start_end_lines_of_tc_in_lines,
+            integrate_functions.integrate_test_case(run_only_once, file_name, lines, tc_lines,
+                                                    test_case, get_start_end_lines_of_tc_in_lines,
                                                     output_from_read_input_data_from_json_file)
             run_only_once = False
     except Exception as error:
