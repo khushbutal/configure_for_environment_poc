@@ -42,11 +42,10 @@ if __name__ == '__main__':
         # Extracting the stage attributes from the parametrize statements.
         unique_attributes = get_stage_attributes.get_stage_attributes(tc_lines, test_case, "@pytest.mark.parametrize('stage_attributes'")
 
-        doc_string, input_data, parametrize, expected_output, assertion, sa_update = read_input_data.read_input_data_from_json_file(
+        output_from_read_input_data_from_json_file = read_input_data.read_input_data_from_json_file(
             'data/input_data.json', test_case, unique_attributes)
         integrate_functions.integrate_test_case(git_branch, file_name, lines, tc_lines, test_case,
                                                 get_start_end_lines_of_tc_in_lines,
-                                                doc_string, input_data, parametrize, expected_output,
-                                                assertion, sa_update)
+                                                output_from_read_input_data_from_json_file)
     else:
         logger.info(f'code generation process did not start.GIT branch {git_branch} is not created.')

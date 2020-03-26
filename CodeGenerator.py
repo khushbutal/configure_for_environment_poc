@@ -35,12 +35,13 @@ def generate_imports_and_pipeline_code(file_name_path, test_case, tc_lines, test
     logger.info("successfully generated code ")
 
 
-def generate_data(file_name_path, file_name, lines, tc_lines, test_case, get_start_end_lines_of_tc_in_lines, doc_string,
-                  input_data, parametrize, expected_output, assertion, sa_update):
+def generate_data(file_name_path, file_name, lines, tc_lines, test_case, get_start_end_lines_of_tc_in_lines,
+                  output_from_read_input_data_from_json_file):
     """Here we are updating test case code(tc_lines) only like doc_string, input_data, parametrize, etc..
     Because we are deleting pass from lines, will just write updated tc_lines
     into the lines(original) i.e. final_tc_lines  and write to stage file(file_name).
     """
+    doc_string, input_data, parametrize, expected_output, assertion, sa_update = output_from_read_input_data_from_json_file
     test_case_marker = file_name.split('/')[-1].split('_')[1]
     test_case_line_num_in_tc_lines = get_start_and_end_line_number_of_tc(tc_lines, test_case)[0]
     _, start_line_no_of_tc, end_line_no_of_tc = get_start_end_lines_of_tc_in_lines
