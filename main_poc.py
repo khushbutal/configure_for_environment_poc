@@ -62,9 +62,11 @@ if __name__ == '__main__':
     except Exception as error:
         # if any exception occurs above (such as file not found) then this flag will be set to True
         logger.error(error)
+        # if any exception occurs above, before this any part of the code already write to file name then, delete the
+        # git branch.
         if not is_error_occurred_in_creation_of_git_branch:
             os.chdir(f'{DataCollectorPath}')
+            os.system('git checkout -- .')
             os.system('git checkout master')
             os.system(f'git branch -D {git_branch}')
-            logger.exception(error)
             logger.info(f'git branch {git_branch} has been deleted')
