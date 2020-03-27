@@ -7,12 +7,17 @@ from UserSetiing import DataCollectorPath
 def create_git_branch(gitbranch):
     cwd_path = os.getcwd()
     os.chdir(f'{DataCollectorPath}')
+    # If any changes are already present in the current branch(developer is working on) and those
+    # changes not yet committed, So in this case just doing log saying changes not yet committed.
+    git_diff_output = subprocess.check_output(["git", "diff"])
+    if git_diff_output.decode() != '':
+        raise Exception('Changes are not yet committed in the current branch, commit the changes')
     logger.info(f'creating a git branch {gitbranch}')
     cmd1 = 'git checkout master'
     cmd2 = f'git checkout -b {gitbranch}'
     subprocess.call(cmd1, shell=True)
-    # subprocess.call('git reset --hard origin/master', shell=True)
-    # subprocess.call('git pull', shell=True)
+    subprocess.call('git reset --hard origin/master', shell=True)
+    subprocess.call('git pull', shell=True)
     result = subprocess.call(cmd2, shell=True)
     if not result:
         logger.info(f'successfully created git branch {gitbranch}')

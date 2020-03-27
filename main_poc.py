@@ -1,13 +1,12 @@
 import argparse
 import json
 import os
-import sys
 import get_stage_attributes
 import read_input_data
 import integrate_functions
 
 from loggerUtility import logger
-from utility_functions import get_start_and_end_line_number_of_tc
+from utility_functions import get_start_and_end_line_number_of_tc, check_word
 from UserSetiing import DataCollectorPath
 from utility_functions import create_git_branch
 
@@ -15,37 +14,45 @@ from utility_functions import create_git_branch
 # Reading test case file name and arguments from command line
 # only run if below modules are the entry point to the program. Restricting access to other module
 if __name__ == '__main__':
-    # git_branch = sys.argv[1]
-    # file_name = sys.argv[2]
-    # test_cases = sys.argv[3:]
     parser = argparse.ArgumentParser()
     parser.add_argument('git_branch', help='GitBranch, please provide git branch ')
     parser.add_argument('file_name', help='StageName, please provide file name')
-    parser.add_argument('test_cases', nargs='+', help='TestCaseNames, please provide test case name')
+    parser.add_argument('test_cases', nargs='*', help='TestCaseNames, please provide test case name')
     args = parser.parse_args()
     git_branch = args.git_branch
     file_name = args.file_name
     test_cases = args.test_cases
-    print(test_cases)
 
+    file_path = f'{DataCollectorPath}/stage/configuration/{file_name}'
+
+    # If no test_cases are provided from command line, then script will check for all the test cases in the file.
+    if len(test_cases) == 0:
+        with open(file_path, 'r') as file:
+            lines = file.readlines()
+            all_test_cases = check_word(lines, 'def test')[2]
+            all_test_cases = ['test_' + tc.split('(')[0][len('def test') + 1:] for tc in all_test_cases]
+            test_cases = all_test_cases
     # Finding valid test cases i.e. test case should be present in both the stage file and input_file.json
     with open('data/input_data.json', "r") as input_file:
         json_data = json.load(input_file)
     invalid_test_cases = list(set(test_cases) - set(list(json_data.keys())))
-    if len(invalid_test_cases) > 0:
+    # This second condition comes in handy when no test cases passed i.e. we need to check for all the test cases,
+    # in case number of invalid_test_cases will be many so we are not logging anything.
+    if len(invalid_test_cases) > 0 and len(args.test_cases) > 0:
         logger.info(f'Below test cases are not implemented in input file')
         print(invalid_test_cases)
 
     valid_test_cases = list(set(test_cases).intersection(set(list(json_data.keys()))))
     test_cases = valid_test_cases
-
-    file_path = f'{DataCollectorPath}/stage/configuration/{file_name}'
     run_only_once = True
     is_error_occurred_in_creation_of_git_branch = True
     try:
-        create_git_branch(git_branch)
-        is_error_occurred_in_creation_of_git_branch = False
         for test_case in test_cases:
+            # Create branch only for valid test cases, i.e. calling create_git_branch function in for loop.
+            if run_only_once:
+                create_git_branch(git_branch)
+                is_error_occurred_in_creation_of_git_branch = False
+            # Read the stage file name for every test_case.
             with open(file_path, 'r') as f:
                 lines = f.readlines()
             get_start_end_lines_of_tc_in_lines = get_start_and_end_line_number_of_tc(lines, test_case)
