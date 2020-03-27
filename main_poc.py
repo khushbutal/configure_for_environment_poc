@@ -1,3 +1,4 @@
+import argparse
 import json
 import os
 import sys
@@ -14,9 +15,18 @@ from utility_functions import create_git_branch
 # Reading test case file name and arguments from command line
 # only run if below modules are the entry point to the program. Restricting access to other module
 if __name__ == '__main__':
-    git_branch = sys.argv[1]
-    file_name = sys.argv[2]
-    test_cases = sys.argv[3:]
+    # git_branch = sys.argv[1]
+    # file_name = sys.argv[2]
+    # test_cases = sys.argv[3:]
+    parser = argparse.ArgumentParser()
+    parser.add_argument('git_branch', help='GitBranch, please provide git branch ')
+    parser.add_argument('file_name', help='StageName, please provide file name')
+    parser.add_argument('test_cases', nargs='+', help='TestCaseNames, please provide test case name')
+    args = parser.parse_args()
+    git_branch = args.git_branch
+    file_name = args.file_name
+    test_cases = args.test_cases
+    print(test_cases)
 
     # Finding valid test cases i.e. test case should be present in both the stage file and input_file.json
     with open('data/input_data.json', "r") as input_file:
