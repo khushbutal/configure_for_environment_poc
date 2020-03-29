@@ -1,8 +1,10 @@
+# keep the python package and codegen package separate
 import fileinput
 import sys
+
 from TestCaseBodyCode import Body_code
+from utility_functions import  import_libraries
 from pipelineBuilderCode import PipelineBuilderCode
-from LibraryImporter import Import
 from loggerUtility import logger
 from global_variable_initializers.GlobalVariableInitializer import GlobalVariable
 from utility_functions import get_start_and_end_line_number_of_tc, check_word, create_doc_string
@@ -12,24 +14,26 @@ marker_holder = {'mqtt': 'mqtt_broker'}
 
 
 def generate_imports_and_pipeline_code(file_name_path, test_case, tc_lines, test_case_line_num):
+    """this functions import all libraries at the top of the file and pipeline builder code at the bottom of the file"""
     file_name = file_name_path.split('/')[-1]
-    import_object = Import(file_name)
-    import_library = import_object.import_library()
+    libraries = import_libraries(file_name_path)
     for line in fileinput.FileInput(file_name_path, inplace=1):
         # import all libraries
         if 'import pytest' in line:
             line = line.rstrip()
-            line = line.replace(line, f'{import_library}')
+            line = line.replace(line, f'{libraries}')
             # not writing if line is equal to specified one .Already handled during library import
         if line.strip("\n") != "from streamsets.testframework.decorators import stub":
             sys.stdout.write(line)
     # opening the file in append mode to append pipeline builder code to the file
+    logger.info('libraries imported successfully ')
     with open(file_name_path, 'a+') as f:
         pipeline_builder_object = PipelineBuilderCode(file_name, tc_lines[test_case_line_num])
         build_pipeline = pipeline_builder_object.build_pipeline()
         build_pipeline_code = build_pipeline
         f.write(build_pipeline_code)
     # setting global variable at the top if the test case or file need to set it
+    logger.info("pipeline builder code successfully generated")
     global_object = GlobalVariable(file_name_path, test_case, file_name)
     global_object.set_global_variable()
     logger.info("successfully generated code ")

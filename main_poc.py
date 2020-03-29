@@ -1,10 +1,11 @@
+# keep the python package and codegen package separate
 import argparse
 import json
 import os
+
 import get_stage_attributes
 import read_input_data
 import integrate_functions
-
 from loggerUtility import logger
 from utility_functions import get_start_and_end_line_number_of_tc, check_word
 from UserSetiing import DataCollectorPath

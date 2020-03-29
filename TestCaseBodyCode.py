@@ -1,6 +1,6 @@
+# keep the python package and codegen package separate
 import os
 import sys
-
 
 class Body_code:
     def __init__(self, file_name, function):

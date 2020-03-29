@@ -1,5 +1,7 @@
+# keep the python package and codegen package separate
 import re
 import ast
+
 from loggerUtility import logger
 from utility_functions import check_word
 

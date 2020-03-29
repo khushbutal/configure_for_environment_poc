@@ -1,3 +1,4 @@
+# keep the python package and codegen package separate
 import json
 import os
 

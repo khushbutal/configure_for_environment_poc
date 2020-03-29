@@ -1,0 +1,20 @@
+{
+    "pytest.":"import pytest",
+    "time.":"import time",
+    "OrderedDict":"from collections import OrderedDict",
+    "string.": "import string",
+    "logging.": "import logging",
+    "pike.": "import pika",
+    "rabbitmq": "from streamsets.testframework.markers import rabbitmq",
+    "get_random_string":"from streamsets.testframework.utils import get_random_string",
+    "logger.": "logger = logging.getLogger(__name__)",
+    "logger.setLevel":"logger.setLevel(logging.DEBUG)",
+    "database.": "from streamsets.testframework.markers import database",
+    "@stub":"from streamsets.testframework.decorators import stub",
+    "math.":"import math",
+    "os.":"import os",
+    "json.":"import json",
+    "tempfile": "import tempfile",
+    "StartError":"from streamsets.sdk.sdc_api import StartError"
+
+}

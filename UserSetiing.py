@@ -1,3 +1,4 @@
+# keep the python package and codegen package separate
 import os
 # Add datacollector_tests_project_path environment variable in ~/.bashrc, example provided below
 # export datacollector_tests_project_path=~/project/gerrit/datacollector-tests
