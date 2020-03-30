@@ -61,6 +61,7 @@ if __name__ == '__main__':
             # Extracting the required lines of test case from the entire file.
             tc_lines = lines[start_line_no_of_tc_in_lines:end_line_no_of_tc_in_lines]
             len_tc_lines = len(tc_lines)
+            # Remove empty line(2 extra lines after pass) in the gathered test case lines
             while len_tc_lines > 0:
                 if tc_lines[len_tc_lines-1] == '\n':
                     tc_lines.pop(len_tc_lines-1)
@@ -72,14 +73,14 @@ if __name__ == '__main__':
                                                                           "@pytest.mark.parametrize('stage_attributes'")
 
             output_from_read_input_data_from_json_file = read_input_data.read_input_data_from_json_file(
-                'data/input_data.json', test_case, unique_attributes)
+                'data/input_data.json', test_case)
             integrate_functions.integrate_test_case(run_only_once, file_name, lines, tc_lines,
                                                     test_case, get_start_end_lines_of_tc_in_lines,
                                                     output_from_read_input_data_from_json_file)
             run_only_once = False
     except Exception as error:
         # if any exception occurs above (such as file not found) then this flag will be set to True
-        logger.error(error)
+        logger.exception(error)
         # if any exception occurs above, before this any part of the code already write to file name then, delete the
         # git branch.
         if not is_error_occurred_in_creation_of_git_branch:

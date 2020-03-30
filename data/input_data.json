@@ -1,8 +1,8 @@
 {
   "test_parse_nulls": {
+    "_comment" : "stage/configuration/test_mqtt_subscriber_origin.py",
+    "doc_string" : "\t\"\"\"verify whether rabbitq consumer origin can convert string constant to null.If we check 'parse_nulls'\n\trabbitq consumer origin should convert String mentioned in 'null_constant' to null.\"\"\"",
     "DELIMITED":{
-      "_comment" : "stage/configuration/test_mqtt_subscriber_origin.py",
-      "doc_string" : "\t\"\"\"verify whether rabbitq consumer origin can convert string constant to null.If we check 'parse_nulls'\n\trabbitq consumer origin should convert String mentioned in 'null_constant' to null.\"\"\"",
       "sa_update" :  "\n\tif stage_attributes['parse_nulls']:\n\t\tstage_attributes.update({'null_constant': 'Field21'})",
       "input_data" :  "\tINPUT_DATA = [['header1', 'header2', 'header3'], ['Field11', 'Field12', 'Field13'], ['Field21', 'Field22','Field23']]\n\tINPUT_DATA_STR = '\\n'.join([','.join(line) for line in INPUT_DATA])",
       "expected_output" :  "\n\tEXPECTED_OUTPUT_NONE = OrderedDict([('header1', None), ('header2', 'Field22'), ('header3', 'Field23')])\n\tEXPECTED_OUTPUT = OrderedDict([('header1', 'Field21'), ('header2', 'Field22'), ('header3', 'Field23')])",
@@ -11,48 +11,52 @@
   },
 
   "test_quote_character": {
+    "_comment" : "stage/configuration/test_mqtt_subscriber_origin.py,  test_rabbitmq_consumer_origin",
+    "doc_string" : "\t\"\"\"Verify the quote character configuration for 'rabbitmq consumer origin'.\n\n\tInput data fields have delimiter characters. rabbitmq consumer origin should read this data and produce\n\tfield without escape character. e.g. ;|Field is value of field with \"|\" as delimiter character and \";\" as\n\tquote character then output field should be \"|Field\"\"\"",
+    "parametrize" : "@pytest.mark.parametrize('quote_character', ['\t', ';', ' '])\n@pytest.mark.parametrize('multi_character_field_delimiter', ['||'])\n@pytest.mark.parametrize('delimiter_character', ['^'])",
     "DELIMITED": {
-      "doc_string" : "\t\"\"\"Verify the quote character configuration for 'rabbitmq consumer origin'.\n\n\tInput data fields have delimiter characters. rabbitmq consumer origin should read this data and produce\n\tfield without escape character. e.g. ;|Field is value of field with \"|\" as delimiter character and \";\" as\n\tquote character then output field should be \"|Field\"\"\"",
-      "_comment" : "stage/configuration/test_mqtt_subscriber_origin.py,  test_rabbitmq_consumer_origin",
-      "parametrize" : "@pytest.mark.parametrize('quote_character', ['\t', ';', ' '])\n@pytest.mark.parametrize('multi_character_field_delimiter', ['||'])\n@pytest.mark.parametrize('delimiter_character', ['^'])",
       "sa_update" : "\n\t\tstage_attributes.update({'quote_character': quote_character,\n\t\t\t\t\t\t\t\t 'delimiter_character': delimiter_character})",
       "input_data" : "\tif stage_attributes['delimiter_format_type'] == 'CUSTOM':\n\t\tf = lambda ip_string: ip_string.format(quote_character=quote_character,\n\t\t\t\t\t\t\t\t\t\t\t   delimiter_character=delimiter_character)\n\t\tDATA = [[f('{quote_character}Field11{delimiter_character}{quote_character}'), 'Field12',\n\t\t\t\t f('{quote_character},Field13{quote_character}')],\n\t\t\t\t[f('{quote_character}Field{delimiter_character}21{quote_character}'), 'Field22', 'Field23']]\n\t\tDATA = '\\n'.join([delimiter_character.join(t1) for t1 in DATA])\n\t\tEXPECTED_OUTPUT = [OrderedDict([('0', 'Field11^'), ('1', 'Field12'), ('2', ',Field13')]),\n\t\t\t\t\t\t   OrderedDict([('0', 'Field^21'), ('1', 'Field22'), ('2', 'Field23')])]\n\telse:\n\t\tf = lambda ip_string: ip_string.format(quote_character=quote_character,\n\t\t\t\t\t\t\t\t\t\t\t   multi_character_field_delimiter=multi_character_field_delimiter)\n\t\tDATA = [[f('{quote_character}Field11{multi_character_field_delimiter}{quote_character}'), 'Field12',\n\t\t\t\t f('{quote_character},Field13{quote_character}')],\n\t\t\t\t[f('{quote_character}Field{multi_character_field_delimiter}21{quote_character}'), 'Field22', 'Field23']]\n\t\tDATA = '\\n'.join([multi_character_field_delimiter.join(t1) for t1 in DATA])\n\t\tEXPECTED_OUTPUT = [OrderedDict([('0', 'Field11||'), ('1', 'Field12'), ('2', ',Field13')]),\n\t\t\t\t\t\t   OrderedDict([('0', 'Field||21'), ('1', 'Field22'), ('2', 'Field23')])]",
       "assertion" : "\t\tassert output_records == EXPECTED_OUTPUT"
     }
   },
   "test_on_parse_error": {
+    "_comment" : "stage/configuration/test_rabbitmq_consumer_origin.py",
+    "doc_string" : "\t\"\"\"In below 3 lines 1st and 3rd lines are in the default Log4J format 2nd is some random format.\n\tERROR -- Skips reading the line and raises execption of data not being in the correct format.\n\tIGNORE -- LSkips reading the line and does not log an error.\n\tINCLUDE_AS_STACK_TRACE -- Includes information that cannot be parsed as a stack trace to the previously-read log\n\tline.\n\tThe information is added to the message field for the last valid log line.\"\"\"",
     "LOG": {
-      "_comment" : "stage/configuration/test_rabbitmq_consumer_origin.py",
-      "doc_string" : "\t\"\"\"In below 3 lines 1st and 3rd lines are in the default Log4J format 2nd is some random format.\n\tERROR -- Skips reading the line and raises execption of data not being in the correct format.\n\tIGNORE -- LSkips reading the line and does not log an error.\n\tINCLUDE_AS_STACK_TRACE -- Includes information that cannot be parsed as a stack trace to the previously-read log\n\tline.\n\tThe information is added to the message field for the last valid log line.\"\"\"",
       "input_data": "\tDATA = '\\n'.join(['0 [main] ERROR test.pack.Log4J  - first message',\n\t\t\t\t\t\t\t  '0 DEBUG test.pack.Log4J  - second message',\n\t\t\t\t\t\t\t  '1 [main] DEBUG test.pack.Log4J  - third message'])",
       "assertion": "\t\tif stage_attributes['on_parse_error'] == 'ERROR':\n\t\t\tassert output_records == []\n\t\telif stage_attributes['on_parse_error'] == 'IGNORE':\n\t\t\tassert output_records[0].field['message'] == 'first message'\n\t\t\tassert output_records[1].field['message'] == 'third message'\n\t\telse:\n\t\t\tassert output_records[0].field['message'] == 'first message\\n0 DEBUG test.pack.Log4J  - second message'\n\t\t\tassert output_records[1].field['message'] == 'third message'"
     }
   },
-    "test_max_object_length_in_chars": {
+  "test_max_object_length_in_chars": {
+    "_comment" : "stage/configuration/test_rabbitmq_consumer_origin.py",
+    "doc_string" : "\t\"\"\"verify max object length in char configuration for rabbitmq consumer origin.\n\n\tFor negative case(char_length=2) stage will not generate any output data as incoming data has more characters\n\tthan the limit we have set.For positive case stage will process the incoming data and send it to next stage\"\"\"",
+    "parametrize": "@pytest.mark.parametrize('char_length', [2, 1024])",
     "JSON": {
-      "_comment" : "stage/configuration/test_rabbitmq_consumer_origin.py",
-      "doc_string" : "\t\"\"\"verify max object length in char configuration for rabbitmq consumer origin.\n\n\tFor negative case(char_length=2) stage will not generate any output data as incoming data has more characters\n\tthan the limit we have set.For positive case stage will process the incoming data and send it to next stage\"\"\"",
-      "parametrize": "@pytest.mark.parametrize('char_length', [2, 1024])",
       "sa_update" : "\n\trabbitmq_consumer.max_object_length_in_chars = char_length",
       "input_data": "\tx = {\"name\": \"John\", \"age\": 30, \"city\": \"New York\"}\n\tinput_data = json.dumps(x)\n\texpected_data = [{'name': 'John', 'age': 30, 'city': 'New York'}]",
       "assertion": "\t\tif char_length == 2:\n\t\t\tassert sdc_executor.get_stage_errors(consumer_origin_pipeline, rabbitmq_consumer)[0].error_code == \\\n\t\t\t\t   'RABBITMQ_04'\n\t\telse:\n\t\t\toutput_records = [record.field for record in snapshot[rabbitmq_consumer.instance_name].output]\n\t\t\tassert expected_data == output_records"
     }
   },
   "test_max_record_length_in_chars": {
+    "_comment" : "stage/configuration/test_rabbitmq_consumer_origin.py",
+    "doc_string" : "\t\"\"\"Case 1:   Record length > max_record_length | Expected outcome --> Record to error\n    Case 2:   Record length < max_record_length | Expected outcome --> Record processed\n    \"\"\"",
+    "parametrize": "@pytest.mark.parametrize('char_length', [2, 1024])",
     "DELIMITED": {
-      "_comment" : "stage/configuration/test_rabbitmq_consumer_origin.py",
-      "doc_string" : "\t\"\"\"\n    Case 1:   Record length > max_record_length | Expected outcome --> Record to error\n    Case 2:   Record length < max_record_length | Expected outcome --> Record processed\n    \"\"\"",
-      "parametrize": "@pytest.mark.parametrize('char_length', [2, 1024])",
       "sa_update" : "\n\trabbitmq_consumer.max_object_length_in_chars = char_length",
       "input_data": "\n\tINPUT_DATA_DEMILITED = 'Field11,Field12,Field13'\n\tEXPECTED_OUTPUT_DELIMITED = OrderedDict([('0', 'Field11'), ('1', 'Field12'), ('2', 'Field13')])",
       "assertion": "\t\tif stage_attributes['data_format'] == 'DELIMITED':\n\t\t\tif len(file_content) > max_record_length_in_chars:\n\t\t\t\tassert output_records == []\n\t\t\telse:\n\t\t\t\tassert output_records[0].field == EXPECTED_OUTPUT_DELIMITED"
     },
     "XML": {
-      "_comment" : "stage/configuration/test_rabbitmq_consumer_origin.py",
-      "parametrize": "@pytest.mark.parametrize('char_length', [2, 1024])",
       "sa_update" : "\n\tstage_attributes.update({'max_record_length_in_chars': max_record_length_in_chars})\n\tif stage_attributes['data_format'] == 'DELIMITED':\n\t\tfile_content = INPUT_DATA_DEMILITED\n\telif stage_attributes['data_format'] == 'XML':\n\t\tfile_content = INPUT_DATA_XML\n\tstage_attributes.update({'delimiter_element': 'msg'})",
       "input_data": "\n\tINPUT_DATA_XML = \"\"\"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n\t\t\t\t\t\t  <root>\n\t\t\t\t\t\t\t  <msg>\n\t\t\t\t\t\t\t\t  <time>8/12/2016 6:01:00</time>\n\t\t\t\t\t\t\t\t  <request>GET /index.html 200</request>\n\t\t\t\t\t\t\t  </msg>\n\t\t\t\t\t\t  </root>\"\"\"\n\tEXPECTED_OUTPUT_XML = [{'8/12/2016 6:01:00': 'GET /index.html 200'}]",
       "assertion": "\t\telif stage_attributes['data_format'] == 'XML':\n\t\t\tif max_record_length_in_chars < 23:\n\t\t\t\tassert not output_records\n\t\t\telse:\n\t\t\t\toutput_list = output_records[0].field\n\t\t\t\trows_from_snapshot = [{str(output_list['time'][0]['value']): str(output_list['request'][0]['value'])}]\n\t\t\t\tassert rows_from_snapshot == EXPECTED_OUTPUT_XML"
     }
+  },
+  "test_ignore_control_characters": {
+    "_comment" : "stage/configuration/test_sftp_ftp_ftps_client_origin.py",
+    "doc_string" : "\t\"\"\"Check if sftp honours ignore_control_characters parameter.\n\tWhen set to true it should ignore all control characters.\n\tWhen set to false it should maintain these characters.\n\t\"\"\"",
+    "input_data" : "\tEXPECTED_OUTPUT_TEXT = 'This was some text with control characters.'\n\tEXPECTED_OUTPUT_TEXT_NOT_IGNORED = 'This was some text with cont\\frol char\\vacters.'\n\tEXPECTED_OUTPUT_JSON = [{'line': 'This was some text with control characters.'}]\n\tEXPECTED_OUTPUT_XML = [{'msg': [{'request': [{'value': 'GET /index.html 200'}],\n\t\t\t\t\t\t\t\t\t'metainfo': [{'value': 'Index page:More info about content'}]}]}]\n\tEXPECTED_OUTPUT_DELIMITED = [['field1', 'field2', 'field3'], ['Field 11', 'Field12', 'Field13']]\n\tEXPECTED_OUTPUT_DELIMITED_NOT_IGNORED = [['field1', 'field2', 'field3'], ['Field\\x00 11', 'Field\\v12', 'Fie\\fld13']]\n\tEXPECTED_OUTPUT_LOG = 'This is a sample log message'\n\tEXPECTED_OUTPUT_LOG_NOT_IGNORED = 'Th\\fis is a sam\\aple l\\x00og message\\v'\n\tsftp_file_name = get_random_string()\n\tif stage_attributes['data_format'] == 'TEXT':\n\t\tDATA = 'This was some text with cont\\frol char\\vacters.'\n\telif stage_attributes['data_format'] == 'JSON':\n\t\tDATA = '{\"line\": \"This was some text with control char\\vacters.\"}'\n\telif stage_attributes['data_format'] == 'XML':\n\t\tDATA = \"\"\"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n\t\t\t\t\t\t\t <root>\n\t\t\t\t\t\t\t\t<msg>\n\t\t\t\t\t\t\t\t\t <request>GET /index.html 200</request>\n\t\t\t\t\t\t\t\t\t <metainfo>Index page:Mo\\0re inf\\fo about\\a cont\\vent</metainfo>\n\t\t\t\t\t\t\t\t </msg>\n\t\t\t\t\t\t\t </root>\"\"\"\n\telif stage_attributes['data_format'] == 'DELIMITED':\n\t\tDATA = '\\n'.join([','.join(line) for line in [['field1', 'field2', 'field3'], ['Field\\0 11', 'Field\\v12',\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t   'Fie\\fld13']]])\n\telif stage_attributes['data_format'] == 'LOG':\n\t\tstage_attributes.update({'log_format': 'LOG4J'})\n\t\tDATA = '200 [main] DEBUG org.StreamSets.Log4j unknown - Th\\fis is a sam\\aple l\\0og message\\v'",
+    "assertion" : "\t\tif ignore_control_characters:\n\t\t\tif stage_attributes['data_format'] == 'TEXT':\n\t\t\t\tassert records[0]['text'] == EXPECTED_OUTPUT_TEXT\n\t\t\telif stage_attributes['data_format'] == 'JSON':\n\t\t\t\tassert records == EXPECTED_OUTPUT_JSON\n\t\t\telif stage_attributes['data_format'] == 'XML':\n\t\t\t\tassert records == EXPECTED_OUTPUT_XML\n\t\t\telif stage_attributes['data_format'] == 'DELIMITED':\n\t\t\t\tassert records == EXPECTED_OUTPUT_DELIMITED\n\t\t\telif stage_attributes['data_format'] == 'LOG':\n\t\t\t\tassert records.field['message'] == EXPECTED_OUTPUT_LOG\n\t\telse:\n\t\t\tif stage_attributes['data_format'] == 'TEXT':\n\t\t\t\tassert records[0]['text'] == EXPECTED_OUTPUT_TEXT_NOT_IGNORED\n\t\t\telif stage_attributes['data_format'] == 'JSON':\n\t\t\t\tpass\n\t\t\telif stage_attributes['data_format'] == 'XML':\n\t\t\t\tpass\n\t\t\telif stage_attributes['data_format'] == 'DELIMITED':\n\t\t\t\tassert records == EXPECTED_OUTPUT_DELIMITED_NOT_IGNORED\n\t\t\telif stage_attributes['data_format'] == 'LOG':\n\t\t\t\tassert records.field['message'] == EXPECTED_OUTPUT_LOG_NOT_IGNORED"
   }
- }
+}

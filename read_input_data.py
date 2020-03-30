@@ -3,27 +3,23 @@ import json
 import os
 
 
-def read_input_data_from_json_file(filename, test_case, unique_attributes):
-    input_data, parametrize, expected_output, assertion, sa_update = "", "", "", "", ""
-    run_only_once = True
+def read_input_data_from_json_file(filename, test_case):
+    input_data_values = {'doc_string': '', 'input_data': '', 'parametrize': '', 'expected_output': '',
+                         'assertion': '', 'sa_update': ''}
     with open(filename, "r") as input_file:
         json_data = json.load(input_file)
         if test_case in json_data:
-            for df in sorted(list(unique_attributes['data_format'])):
-                if df in json_data[test_case]:
-                    input_data_tmp = json_data[test_case][df]['input_data']
-                    expected_output_tmp = json_data[test_case][df]['expected_output'] if 'expected_output' in json_data[test_case][df] else ""
-                    assertion_tmp = json_data[test_case][df]['assertion'] if 'assertion' in json_data[test_case][df] else ""
-                    sa_update_tmp = json_data[test_case][df]['sa_update'] if 'sa_update' in json_data[test_case][df] else ""
-
-                    input_data += input_data_tmp
-                    if run_only_once:
-                        doc_string = json_data[test_case][df]['doc_string'] if 'doc_string' in json_data[test_case][df] else ""
-                        parametrize = json_data[test_case][df]['parametrize'] if 'parametrize' in json_data[test_case][df] else ""
-                        run_only_once = False
-                    expected_output += expected_output_tmp
-                    assertion += assertion_tmp
-                    sa_update += sa_update_tmp
-            return doc_string, input_data, parametrize, expected_output, assertion, sa_update
+            input_data_values = iterate_json_data(json_data[test_case], input_data_values)
+            return input_data_values
         else:
             raise ValueError(f'Test case {test_case} is not found in input file')
+
+
+def iterate_json_data(json_data, input_data_values):
+    for key, value in json_data.items():
+        if isinstance(value, dict):
+            iterate_json_data(value, input_data_values)
+        else:
+            if key in input_data_values:
+                input_data_values[key] += value
+    return input_data_values

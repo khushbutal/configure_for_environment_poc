@@ -40,17 +40,18 @@ def generate_imports_and_pipeline_code(file_name_path, test_case, tc_lines, test
 
 
 def generate_data(file_name_path, file_name, lines, tc_lines, test_case, get_start_end_lines_of_tc_in_lines,
-                  output_from_read_input_data_from_json_file):
+                  input_data_values):
     """Here we are updating test case code(tc_lines) only like doc_string, input_data, parametrize, etc..
     Because we are deleting pass from lines, will just write updated tc_lines
     into the lines(original) i.e. final_tc_lines  and write to stage file(file_name).
     """
-    doc_string, input_data, parametrize, expected_output, assertion, sa_update = output_from_read_input_data_from_json_file
     test_case_marker = file_name.split('/')[-1].split('_')[1]
     test_case_line_num_in_tc_lines = get_start_and_end_line_number_of_tc(tc_lines, test_case)[0]
     _, start_line_no_of_tc, end_line_no_of_tc = get_start_end_lines_of_tc_in_lines
-    # This will remove pass from lines.
+    # This will remove all tc_lines from lines.
     del lines[start_line_no_of_tc:end_line_no_of_tc]
+
+    parametrize = input_data_values['parametrize']
 
     if len(parametrize) > 0:
         extra_arguments = [line.split('(')[1].split(',')[0][1:-1] for line in parametrize.split('\n')]
@@ -59,8 +60,7 @@ def generate_data(file_name_path, file_name, lines, tc_lines, test_case, get_sta
     else:
         extra_arguments_comma_sepa = ""
 
-    marker_test_case_argument = marker_holder[
-        test_case_marker] if test_case_marker in marker_holder else test_case_marker
+    marker_test_case_argument = marker_holder[test_case_marker] if test_case_marker in marker_holder else test_case_marker
     # Updating the test case function with the required arguments
     tc_lines[test_case_line_num_in_tc_lines] = f"{tc_lines[test_case_line_num_in_tc_lines].split('):')[0]}, {marker_test_case_argument}{extra_arguments_comma_sepa}):\n"
 
@@ -69,7 +69,6 @@ def generate_data(file_name_path, file_name, lines, tc_lines, test_case, get_sta
         if tc_lines[line_num] == '@stub\n':
             tc_lines[line_num] = f'@{test_case_marker}\n{parametrize}'
         elif tc_lines[line_num] == '    pass\n':
-
             pipeline_builder_object = PipelineBuilderCode(file_name, tc_lines[test_case_line_num_in_tc_lines])
             build_pipeline = pipeline_builder_object.build_pipeline()
             build_pipeline_code = build_pipeline
@@ -78,16 +77,16 @@ def generate_data(file_name_path, file_name, lines, tc_lines, test_case, get_sta
             for pipeline_line in check_word(build_pipeline_code_list, '>>')[2]:
                 pipeline_lines += pipeline_line.lstrip()
 
-            tc_lines[line_num] = create_doc_string(file_name, test_case, doc_string, pipeline_lines) + '\n'
-            tc_lines[line_num] += input_data.rstrip()
-    tc_lines.append(expected_output)
-    tc_lines.append(sa_update)
+            tc_lines[line_num] = create_doc_string(file_name, test_case, input_data_values['doc_string'], pipeline_lines) + '\n'
+            tc_lines[line_num] += input_data_values['input_data'].rstrip()
+    tc_lines.append(input_data_values['expected_output'])
+    tc_lines.append(input_data_values['sa_update'])
     # generates body code inside test case
     body_code_object = Body_code(file_name, tc_lines[test_case_line_num_in_tc_lines])
     body_code = body_code_object.get_body_code()
     body_code_lines = body_code.split('\n')
     finally_line_num = check_word(body_code_lines, '    finally:')[1][0]
-    body_code_lines[finally_line_num] = assertion + '\n' + body_code_lines[finally_line_num]
+    body_code_lines[finally_line_num] = input_data_values['assertion'] + '\n' + body_code_lines[finally_line_num]
     body_code = '\n'.join(body_code_lines)
     tc_lines.append(body_code)
 
